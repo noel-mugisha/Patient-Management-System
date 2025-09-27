@@ -1,0 +1,14 @@
+# Application properties for the project
+
+spring:
+  application:
+    name: Patient-Service
+  profiles:
+    active: dev
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+server:
+  port: 8080
