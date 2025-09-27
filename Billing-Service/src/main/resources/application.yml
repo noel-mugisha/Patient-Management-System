@@ -1,0 +1,12 @@
+# Application configuration for Billing Service
+
+spring:
+  application:
+    name: Billing-Service
+
+server:
+  port: 8081
+
+grpc:
+  server:
+    port: 9091
