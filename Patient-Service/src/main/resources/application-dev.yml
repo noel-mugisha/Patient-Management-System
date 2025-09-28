@@ -11,3 +11,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+billing:
+  service:
+    address: ${BILLING_SERVICE_ADDRESS:billing-service}
+    grpc:
+      port: ${BILLING_SERVICE_GRPC_PORT:9091}

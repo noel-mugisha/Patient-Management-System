@@ -4,6 +4,7 @@ import com.demo.patientservice.dto.request.PatientRequestDto;
 import com.demo.patientservice.dto.response.PatientResponseDto;
 import com.demo.patientservice.exceptions.DuplicateEmailException;
 import com.demo.patientservice.exceptions.ResourceNotFoundException;
+import com.demo.patientservice.grpc.BillingServiceGrpcClient;
 import com.demo.patientservice.mapper.PatientMapper;
 import com.demo.patientservice.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class PatientService {
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final BillingServiceGrpcClient billingServiceGrpcClient;
 
     public PatientResponseDto savePatient(PatientRequestDto request) {
         if (patientRepository.existsByEmail(request.email())) {
@@ -25,6 +27,10 @@ public class PatientService {
         }
         var patientEntity = patientMapper.toEntity(request);
         var savedPatient = patientRepository.save(patientEntity);
+
+        // Generate billing account using gRPC
+        billingServiceGrpcClient.createBillingAccount(savedPatient.getId().toString(), savedPatient.getName(), savedPatient.getEmail());
+
         return patientMapper.toDto(savedPatient);
     }
 
